@@ -1,0 +1,760 @@
+<div
+  id="inicio"
+  class="landing-shell bg-white text-slate-950 dark:bg-slate-950 dark:text-white"
+  (click)="handleAnchorClick($event)"
+>
+  <header class="landing-header fixed inset-x-0 top-0 z-50 px-3 transition-all duration-300">
+    <div class="landing-container">
+      <div
+        class="landing-header__bar"
+        [class.landing-header__bar--scrolled]="isScrolled"
+      >
+        <a
+          href="#inicio"
+          class="brand-lockup inline-flex items-center"
+          aria-label="Volver al inicio de Certum360"
+          (click)="closeMobileMenu()"
+        >
+          <img
+            src="/images/logo/certum360_logo_dark.png"
+            alt="Certum360"
+            class="header-logo h-12 w-auto object-contain dark:hidden sm:h-16"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            src="/images/logo/certum360_logo_white.png"
+            alt="Certum360"
+            class="header-logo hidden h-12 w-auto object-contain dark:block sm:h-16"
+            loading="eager"
+            decoding="async"
+          />
+        </a>
+
+        <nav class="desktop-nav" aria-label="Navegación principal">
+          @for (item of navItems; track item.href) {
+            <a [href]="item.href" class="nav-link">{{ item.label }}</a>
+          }
+        </nav>
+
+        <div class="header-actions">
+          <a href="#contacto" class="header-link header-link-primary" aria-label="Solicitar Demo">
+            <lucide-icon [img]="MessageCircle" class="h-4 w-4"></lucide-icon>
+            <span class="hidden sm:inline">Solicitar Demo</span>
+            <span class="sm:hidden">Demo</span>
+          </a>
+
+          <button
+            type="button"
+            class="theme-toggle"
+            [attr.aria-label]="currentTheme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+            (click)="toggleTheme()"
+          >
+            @if (currentTheme === 'dark') {
+              <lucide-icon [img]="Sun" class="h-5 w-5"></lucide-icon>
+            } @else {
+              <lucide-icon [img]="Moon" class="h-5 w-5"></lucide-icon>
+            }
+          </button>
+
+          <button
+            type="button"
+            class="mobile-menu-toggle"
+            [attr.aria-expanded]="isMobileMenuOpen"
+            aria-controls="mobile-navigation"
+            aria-label="Abrir navegación"
+            (click)="toggleMobileMenu()"
+          >
+            @if (isMobileMenuOpen) {
+              <lucide-icon [img]="X" class="h-5 w-5"></lucide-icon>
+            } @else {
+              <lucide-icon [img]="Menu" class="h-5 w-5"></lucide-icon>
+            }
+          </button>
+        </div>
+      </div>
+
+      @if (isMobileMenuOpen) {
+        <nav id="mobile-navigation" class="mobile-nav" aria-label="Navegación móvil">
+          @for (item of navItems; track item.href) {
+            <a [href]="item.href" class="mobile-nav-link" (click)="closeMobileMenu()">
+              {{ item.label }}
+            </a>
+          }
+          <a href="#contacto" class="mobile-nav-cta" (click)="closeMobileMenu()">
+            Solicitar Demo
+            <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+          </a>
+        </nav>
+      }
+    </div>
+  </header>
+
+  <main class="overflow-x-clip">
+    <section class="hero-section section-anchor relative pt-20 sm:pt-28 lg:pt-28">
+      <div class="hero-atmosphere absolute inset-0 -z-10"></div>
+      <div class="landing-container pb-14 pt-6 sm:pb-20 lg:pb-24">
+        <div class="grid items-center gap-9 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div class="hero-copy">
+            <span appScrollReveal revealVariant="left" class="glass-badge">
+              <lucide-icon [img]="ShieldCheck" class="h-4 w-4"></lucide-icon>
+              Ecosistema de cumplimiento y riesgo empresarial
+            </span>
+
+            <h1 appScrollReveal revealVariant="left" revealDelay="80ms" class="hero-title mt-5">
+              <span class="hero-brand-gradient">Certum360</span>
+              <span class="hero-headline">
+                Transformamos cumplimiento y riesgo empresarial en inteligencia estratégica
+              </span>
+            </h1>
+
+            <p appScrollReveal revealVariant="left" revealDelay="160ms" class="hero-subtitle mt-5">
+              CERTUM360 ayuda a las organizaciones a evaluar proveedores, gestionar expedientes,
+              fortalecer cumplimiento y reducir riesgos mediante tecnología, análisis y trazabilidad integral.
+            </p>
+
+            <div appScrollReveal revealVariant="left" revealDelay="240ms" class="mt-7 flex flex-col gap-3 sm:flex-row">
+              @for (action of heroActions; track action.label) {
+                <a
+                  [href]="action.href"
+                  [ngClass]="action.variant === 'primary' ? 'primary-action' : 'secondary-action'"
+                >
+                  {{ action.label }}
+                  <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+                </a>
+              }
+            </div>
+          </div>
+
+          <div appScrollReveal revealVariant="right" revealDelay="140ms" class="hero-visual">
+            <div class="hero-laptop-shell">
+              <div class="hero-laptop-glass">
+                <img
+                  src="/images/landing/hero.png"
+                  alt="Visual de plataforma para cumplimiento y evaluación empresarial"
+                  class="hero-laptop-image"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-proof-grid mt-8">
+          @for (item of whatWeDoItems.slice(0, 4); track item.title; let index = $index) {
+            <article
+              appScrollReveal
+              [revealVariant]="index % 2 === 0 ? 'left' : 'right'"
+              [revealDelay]="320 + index * 65 + 'ms'"
+              class="mini-card glass-card"
+            >
+              <span class="icon-tile" [ngClass]="item.accent">
+                <lucide-icon [img]="item.icon" class="h-4 w-4"></lucide-icon>
+              </span>
+              <h2>{{ item.title }}</h2>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="impact-section section-anchor py-14 sm:py-20">
+      <div class="landing-container">
+        <article appScrollReveal revealVariant="scale" class="impact-panel">
+          <div class="impact-icon">
+            <lucide-icon [img]="Network" class="h-9 w-9"></lucide-icon>
+          </div>
+          <div>
+            <span class="dark-glass-badge">
+              <lucide-icon [img]="Radar" class="h-4 w-4"></lucide-icon>
+              Visión integral del ecosistema empresarial
+            </span>
+            <div class="impact-copy">
+              @for (statement of impactStatements; track statement) {
+                <p>{{ statement }}</p>
+              }
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="que-hacemos" class="what-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+          <div>
+            <span appScrollReveal revealVariant="left" class="glass-badge">
+              <lucide-icon [img]="Sparkles" class="h-4 w-4"></lucide-icon>
+              ¿Qué hacemos?
+            </span>
+            <h2 appScrollReveal revealVariant="left" revealDelay="80ms" class="section-title mt-5">
+              Un ecosistema integral de cumplimiento y gestión empresarial
+            </h2>
+            <p appScrollReveal revealVariant="left" revealDelay="150ms" class="section-copy mt-5">
+              En CERTUM360 centralizamos procesos críticos de evaluación, cumplimiento y control empresarial en una sola plataforma inteligente.
+            </p>
+          </div>
+
+          <div class="check-grid">
+            @for (item of whatWeDoItems; track item.title; let index = $index) {
+              <article
+                appScrollReveal
+                [revealVariant]="index % 2 === 0 ? 'left' : 'right'"
+                [revealDelay]="index * 55 + 'ms'"
+                class="check-card glass-card"
+              >
+                <span class="icon-tile" [ngClass]="item.accent">
+                  <lucide-icon [img]="item.icon" class="h-5 w-5"></lucide-icon>
+                </span>
+                <h3>{{ item.title }}</h3>
+              </article>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="soluciones" class="solutions-section section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="mx-auto max-w-4xl text-center">
+          <span appScrollReveal class="glass-badge mx-auto">
+            <lucide-icon [img]="ClipboardCheck" class="h-4 w-4"></lucide-icon>
+            Nuestras Soluciones
+          </span>
+          <h2 appScrollReveal revealDelay="80ms" class="section-title mx-auto mt-5">
+            Modelos integrales para evaluar, controlar y decidir con evidencia.
+          </h2>
+        </div>
+
+        <div class="solutions-grid mt-10">
+          @for (solution of solutions; track solution.title; let index = $index) {
+            <article
+              appScrollReveal
+              [revealVariant]="index % 2 === 0 ? 'up' : 'scale'"
+              [revealDelay]="index * 70 + 'ms'"
+              class="solution-card mac-window-card glass-card"
+              [class.solution-card--featured]="solution.featured"
+            >
+              <div class="mac-window-bar" aria-hidden="true">
+                <span class="mac-dot mac-dot--close"></span>
+                <span class="mac-dot mac-dot--minimize"></span>
+                <span class="mac-dot mac-dot--expand"></span>
+              </div>
+              <div class="solution-card__body">
+                <span class="icon-tile icon-tile-lg" [ngClass]="solution.accent">
+                  <lucide-icon [img]="solution.icon" class="h-6 w-6"></lucide-icon>
+                </span>
+                <div>
+                  <h3>{{ solution.title }}</h3>
+                  <p>{{ solution.description }}</p>
+                </div>
+              </div>
+              <div class="solution-list">
+                <h4>{{ solution.listLabel }}</h4>
+                <ul>
+                  @for (item of solution.items; track item) {
+                    <li>
+                      <lucide-icon [img]="CircleCheck" class="h-4 w-4"></lucide-icon>
+                      <span>{{ item }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+              <div class="benefit-strip">
+                <strong>Beneficio:</strong>
+                <span>{{ solution.benefit }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="differentiators-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div class="text-center lg:text-left">
+          <span appScrollReveal revealVariant="left" class="glass-badge mx-auto lg:mx-0">
+            <lucide-icon [img]="ShieldCheck" class="h-4 w-4"></lucide-icon>
+            ¿Por qué CERTUM360?
+          </span>
+          <h2 appScrollReveal revealVariant="left" revealDelay="80ms" class="section-title mx-auto mt-5 lg:mx-0">
+            ¿Qué nos hace diferentes?
+          </h2>
+          <div appScrollReveal revealVariant="left" revealDelay="150ms" class="differentiator-visual-panel mt-8">
+            <img
+              src="/images/landing/diferente.png"
+              alt="Diferenciadores de CERTUM360"
+              class="differentiator-visual-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <div class="differentiator-grid mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          @for (item of differentiators; track item.title; let index = $index) {
+            <article appScrollReveal revealVariant="right" [revealDelay]="index * 55 + 'ms'" class="feature-card glass-card">
+              <span class="icon-tile" [ngClass]="item.accent">
+                <lucide-icon [img]="item.icon" class="h-5 w-5"></lucide-icon>
+              </span>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="industrias" class="industries-section section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid gap-10 lg:grid-cols-[1fr_0.86fr] lg:items-center">
+          <div>
+            <span appScrollReveal revealVariant="left" class="dark-glass-badge">
+              <lucide-icon [img]="Building2" class="h-4 w-4"></lucide-icon>
+              Industrias
+            </span>
+            <h2 appScrollReveal revealVariant="left" revealDelay="80ms" class="dark-section-title mt-5">
+              Industrias que atendemos
+            </h2>
+            <div class="industry-grid mt-8">
+              @for (industry of industries; track industry.title; let index = $index) {
+                <article appScrollReveal revealVariant="left" [revealDelay]="index * 40 + 'ms'" class="industry-chip">
+                  <span class="icon-tile" [ngClass]="industry.accent">
+                    <lucide-icon [img]="industry.icon" class="h-4 w-4"></lucide-icon>
+                  </span>
+                  <h3>{{ industry.title }}</h3>
+                </article>
+              }
+            </div>
+          </div>
+
+          <div appScrollReveal revealVariant="right" class="industry-visual mac-window-card">
+            <div
+              class="mac-window-bar"
+              style="border-bottom-color: rgba(255,255,255,.1); background: rgba(2,6,23,.72); backdrop-filter: blur(18px);"
+              aria-hidden="true"
+            >
+              <span class="mac-dot mac-dot--close"></span>
+              <span class="mac-dot mac-dot--minimize"></span>
+              <span class="mac-dot mac-dot--expand"></span>
+            </div>
+            <div class="industry-visual__content">
+              <img
+                src="/images/landing/planeta.png"
+                alt="Industrias atendidas por CERTUM360"
+                class="industry-visual-image"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="process-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="mx-auto max-w-4xl text-center">
+          <span appScrollReveal class="glass-badge mx-auto">
+            <lucide-icon [img]="Workflow" class="h-4 w-4"></lucide-icon>
+            Proceso
+          </span>
+          <h2 appScrollReveal revealDelay="80ms" class="section-title mx-auto mt-5">
+            ¿Cómo funciona CERTUM360?
+          </h2>
+        </div>
+
+        <div class="process-timeline mt-10">
+          @for (step of processSteps; track step.step; let index = $index) {
+            <article appScrollReveal [revealDelay]="index * 80 + 'ms'" class="process-card">
+              <span>{{ step.step }}</span>
+              <h3>{{ step.title }}</h3>
+              <p>{{ step.description }}</p>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits-section section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+          <div>
+            <span appScrollReveal revealVariant="left" class="dark-glass-badge">
+              <lucide-icon [img]="BarChart3" class="h-4 w-4"></lucide-icon>
+              Beneficios
+            </span>
+            <h2 appScrollReveal revealVariant="left" revealDelay="80ms" class="dark-section-title mt-5">
+              Beneficios para tu organización
+            </h2>
+            <div appScrollReveal revealVariant="left" revealDelay="150ms" class="benefits-visual-clean mt-8">
+              <img
+                src="/images/landing/graficas.png"
+                alt="Beneficios y métricas de gestión empresarial"
+                class="benefits-visual-image"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+
+          <div class="benefit-grid">
+            @for (benefit of benefits; track benefit.title; let index = $index) {
+              <article appScrollReveal revealVariant="right" [revealDelay]="index * 45 + 'ms'" class="benefit-card">
+                <span class="icon-tile" [ngClass]="benefit.accent">
+                  <lucide-icon [img]="benefit.icon" class="h-4 w-4"></lucide-icon>
+                </span>
+                <h3>{{ benefit.title }}</h3>
+              </article>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nosotros" class="about-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid items-center gap-12 lg:grid-cols-[1fr_0.95fr] lg:gap-16">
+          <div>
+            <span appScrollReveal revealVariant="left" class="glass-badge">
+              <lucide-icon [img]="Building2" class="h-4 w-4"></lucide-icon>
+              Sobre Nosotros
+            </span>
+            <h2 appScrollReveal revealVariant="left" revealDelay="80ms" class="section-title mt-5">
+              ¿Quiénes Somos?
+            </h2>
+            <div appScrollReveal revealVariant="left" revealDelay="150ms" class="section-copy mt-5 space-y-4">
+              @for (paragraph of aboutParagraphs; track paragraph) {
+                <p>{{ paragraph }}</p>
+              }
+            </div>
+            <article appScrollReveal revealVariant="left" revealDelay="240ms" class="philosophy-card glass-card mt-7">
+              <span class="icon-tile accent-violet">
+                <lucide-icon [img]="Sparkles" class="h-5 w-5"></lucide-icon>
+              </span>
+              <div>
+                <h3>Nuestra Filosofía</h3>
+                @for (paragraph of philosophyParagraphs; track paragraph) {
+                  <p>{{ paragraph }}</p>
+                }
+              </div>
+            </article>
+          </div>
+
+          <div appScrollReveal revealVariant="right" class="about-visual">
+            <div class="about-visual__panel mac-window-card">
+              <div class="mac-window-bar" aria-hidden="true">
+                <span class="mac-dot mac-dot--close"></span>
+                <span class="mac-dot mac-dot--minimize"></span>
+                <span class="mac-dot mac-dot--expand"></span>
+              </div>
+              <div class="about-visual__content">
+                <img
+                  src="/images/landing/central.png"
+                  alt="Ecosistema central de cumplimiento CERTUM360"
+                  class="about-visual__image"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-values-section section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid gap-5 md:grid-cols-2">
+          @for (item of missionVision; track item.title; let index = $index) {
+            <article
+              appScrollReveal
+              [revealVariant]="index % 2 === 0 ? 'left' : 'right'"
+              [revealDelay]="index * 90 + 'ms'"
+              class="mission-card glass-card"
+            >
+              <span class="icon-tile icon-tile-lg" [ngClass]="item.accent">
+                <lucide-icon [img]="item.icon" class="h-6 w-6"></lucide-icon>
+              </span>
+              <h2>{{ item.title }}</h2>
+              <p>{{ item.description }}</p>
+            </article>
+          }
+        </div>
+
+        <div class="mt-10">
+          <div class="mx-auto max-w-3xl text-center">
+            <span appScrollReveal class="glass-badge mx-auto">
+              <lucide-icon [img]="CircleCheck" class="h-4 w-4"></lucide-icon>
+              Valores
+            </span>
+          </div>
+          <div class="value-grid mt-8">
+            @for (value of values; track value.title; let index = $index) {
+              <article
+                appScrollReveal
+                [revealVariant]="index % 3 === 0 ? 'left' : index % 3 === 1 ? 'right' : 'up'"
+                [revealDelay]="index * 50 + 'ms'"
+                class="value-card glass-card"
+              >
+                <span class="icon-tile" [ngClass]="value.accent">
+                  <lucide-icon [img]="value.icon" class="h-5 w-5"></lucide-icon>
+                </span>
+                <h3>{{ value.title }}</h3>
+                <p>{{ value.description }}</p>
+              </article>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="use-cases-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
+          <div appScrollReveal revealVariant="left" class="use-case-visual">
+            <img
+              src="/images/landing/persona1.png"
+              alt="Especialista revisando expedientes y riesgos empresariales"
+              class="use-case-person"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="use-case-panel">
+              <lucide-icon [img]="ShieldCheck" class="h-5 w-5"></lucide-icon>
+              <span>Evaluación y monitoreo con evidencia</span>
+            </div>
+          </div>
+
+          <div>
+            <span appScrollReveal revealVariant="right" class="glass-badge">
+              <lucide-icon [img]="UsersRound" class="h-4 w-4"></lucide-icon>
+              Casos de uso
+            </span>
+            <h2 appScrollReveal revealVariant="right" revealDelay="80ms" class="section-title mt-5">
+              Casos de uso
+            </h2>
+            <div class="use-case-grid mt-8">
+              @for (useCase of useCases; track useCase.title; let index = $index) {
+                <article
+                  appScrollReveal
+                  revealVariant="right"
+                  [revealDelay]="index * 55 + 'ms'"
+                  class="use-case-card glass-card w-full last:sm:col-span-2"
+                >
+                  <span class="icon-tile" [ngClass]="useCase.accent">
+                    <lucide-icon [img]="useCase.icon" class="h-5 w-5"></lucide-icon>
+                  </span>
+                  <div>
+                    <h3>{{ useCase.title }}</h3>
+                    <p>{{ useCase.description }}</p>
+                  </div>
+                </article>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="mx-auto max-w-4xl text-center">
+          <span appScrollReveal class="glass-badge mx-auto">
+            <lucide-icon [img]="MessageCircle" class="h-4 w-4"></lucide-icon>
+            Preguntas Frecuentes
+          </span>
+          <h2 appScrollReveal revealDelay="80ms" class="section-title mx-auto mt-5">
+            Preguntas Frecuentes
+          </h2>
+        </div>
+
+        <div class="faq-list mx-auto mt-9 max-w-4xl">
+          @for (faq of faqs; track faq.question; let index = $index) {
+            <details appScrollReveal [revealDelay]="index * 55 + 'ms'" class="faq-item glass-card">
+              <summary>
+                <span class="flex min-w-0 items-center gap-3">
+                  <span
+                    class="inline-grid h-8 w-8 shrink-0 place-items-center rounded-full border border-sky-300/30 bg-sky-500/10 text-blue-700 dark:border-sky-300/15 dark:bg-sky-400/10 dark:text-cyan-300"
+                    aria-hidden="true"
+                  >
+                    <lucide-icon [img]="BadgeQuestionMark" class="h-4 w-4"></lucide-icon>
+                  </span>
+                  <span>{{ faq.question }}</span>
+                </span>
+                <lucide-icon [img]="ChevronDown" class="h-5 w-5"></lucide-icon>
+              </summary>
+              <p>{{ faq.answer }}</p>
+            </details>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="cta-final" class="final-cta section-anchor py-16 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div appScrollReveal revealVariant="scale" class="final-panel">
+          <img
+            src="/images/logo/certum360_icono.png"
+            alt=""
+            class="final-watermark"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+          />
+          <div class="final-content mx-auto max-w-3xl text-center">
+            <span class="dark-glass-badge mx-auto">
+              <lucide-icon [img]="Rocket" class="h-4 w-4"></lucide-icon>
+              CTA final
+            </span>
+            <h2>La confianza también debe auditarse</h2>
+            <p>
+              Transforma cumplimiento, expedientes y evaluación de terceros en una ventaja estratégica.
+            </p>
+            <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <a href="#contacto" class="final-primary-action">
+                Solicitar Demo
+                <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+              </a>
+              <a href="#contacto" class="final-secondary-action">
+                Hablar con un especialista
+                <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="contact-section section-anchor bg-white py-16 dark:bg-slate-950 sm:py-20 lg:py-24">
+      <div class="landing-container">
+        <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
+          <div appScrollReveal revealVariant="left" class="contact-copy">
+            <span class="glass-badge">
+              <lucide-icon [img]="MessageCircle" class="h-4 w-4"></lucide-icon>
+              Contacto
+            </span>
+            <h2 class="section-title mt-5">
+              Agenda una conversación para conocer cómo CERTUM360 puede adaptarse a tu operación.
+            </h2>
+            <div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+              <a href="#contacto" class="primary-action">
+                Solicitar Demo
+                <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+              </a>
+              <a href="#contacto" class="secondary-action">
+                Hablar con un especialista
+                <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+              </a>
+            </div>
+          </div>
+
+          <!-- Integrar endpoint o servicio de formulario cuando exista un flujo comercial definido. -->
+          <form
+            appScrollReveal
+            revealVariant="right"
+            revealDelay="120ms"
+            class="contact-form glass-card"
+            (submit)="preventContactSubmit($event)"
+          >
+            <div class="form-grid">
+              <label>
+                <span>Nombre</span>
+                <input type="text" name="nombre" autocomplete="name" />
+              </label>
+              <label>
+                <span>Empresa</span>
+                <input type="text" name="empresa" autocomplete="organization" />
+              </label>
+              <label>
+                <span>Correo</span>
+                <input type="email" name="correo" autocomplete="email" />
+              </label>
+              <label>
+                <span>Mensaje</span>
+                <textarea name="mensaje" rows="5"></textarea>
+              </label>
+            </div>
+            <button type="submit" class="form-submit">
+              Solicitar Demo
+              <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="aviso-privacidad" class="privacy-section section-anchor py-12 sm:py-16">
+      <div class="landing-container">
+        <details appScrollReveal class="privacy-panel">
+          <summary>
+            <span>
+              <strong>Aviso de Privacidad Integral</strong>
+              <small>CERTUM360 · Última actualización: Mayo 2026</small>
+            </span>
+            <lucide-icon [img]="ChevronDown" class="h-5 w-5"></lucide-icon>
+          </summary>
+          <div class="privacy-content">
+            <!-- Validar con el cliente si el correo de privacidad debe migrar a un dominio certum360.com. -->
+            <p>
+              En cumplimiento con lo dispuesto por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares,
+              su Reglamento y demás disposiciones aplicables, CERTUM360 pone a disposición el presente Aviso de Privacidad Integral,
+              con la finalidad de informarle el tratamiento que se dará a sus datos personales.
+            </p>
+            @for (section of privacySections; track section.title) {
+              <article>
+                <h3>{{ section.title }}</h3>
+                @for (paragraph of section.paragraphs; track paragraph) {
+                  <p>{{ paragraph }}</p>
+                }
+                @if (section.items.length > 0) {
+                  <ul>
+                    @for (item of section.items; track item) {
+                      <li>{{ item }}</li>
+                    }
+                  </ul>
+                }
+              </article>
+            }
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-section text-white">
+    <div class="landing-container py-12 sm:py-14 lg:py-16">
+      <div appScrollReveal revealVariant="scale" class="footer-panel">
+        <div class="footer-brand">
+          <a href="#inicio" aria-label="Volver al inicio de Certum360">
+            <img
+              src="/images/logo/certum360_logo_white.png"
+              alt="Certum360"
+              class="footer-logo h-16 w-auto object-contain sm:h-20"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+          <p>
+            Ecosistema de cumplimiento, evaluación integral y gestión estratégica de riesgos empresariales.
+          </p>
+          <a href="#contacto" class="footer-cta">
+            Solicitar Demo
+            <lucide-icon [img]="ArrowRight" class="h-4 w-4"></lucide-icon>
+          </a>
+        </div>
+
+        <nav class="footer-links" aria-label="Enlaces de pie de página">
+          @for (link of footerLinks; track link.href) {
+            <a [href]="link.href">{{ link.label }}</a>
+          }
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© CERTUM360. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+</div>
